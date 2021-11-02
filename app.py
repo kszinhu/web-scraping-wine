@@ -3,7 +3,7 @@ from flask_restplus import Api
 
 from ma import ma
 from db import db
-from controllers.wine import Wine
+from controllers.wine import Wine, WineList
 
 from marshmallow import ValidationError
 
@@ -17,6 +17,7 @@ def create_tables():
     db.create_all()
 
 api.add_resource(Wine, '/wine/<int:id>')
+api.add_resource(WineList, '/wines')
 
 if __name__ == '__main__':
     db.init_app(app)
