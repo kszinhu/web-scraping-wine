@@ -1,5 +1,5 @@
 from flask import Flask, jsonify
-from flask_restplus import Api
+from flask_restx import Api
 
 from ma import ma
 from db import db
@@ -15,6 +15,10 @@ app = server.app
 @app.before_first_request
 def create_tables():
     db.create_all()
+
+@app.errorhandler(ValidationError)
+def handle_validation_error(e):
+    return jsonify(e.messages), 400
 
 api.add_resource(Wine, '/wine/<int:id>')
 api.add_resource(WineList, '/wines')

@@ -2,7 +2,7 @@ aniso8601==8.1.0
 attrs==20.3.0
 click==7.1.2
 flask-marshmallow==0.14.0
-flask-restplus==0.13.0
+flask_restx == 0.5.1
 flask-sqlalchemy==2.4.4
 flask==1.1.2
 itsdangerous==1.1.0

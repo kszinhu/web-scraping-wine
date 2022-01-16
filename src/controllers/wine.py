@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from flask_restplus import Resource, fields
+from flask_restx import Resource, fields
 from constants.http_status_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 
 from models.wine import WineModel
@@ -15,6 +15,7 @@ wine_list_schema = WineSchema(many=True)
 item = wine_ns.model('Wine', {
     'name': fields.String(description='Wine name'),
     'price': fields.Float(description='Wine price'),
+    'link': fields.String(description='Wine link')
 })
 
 class Wine(Resource):

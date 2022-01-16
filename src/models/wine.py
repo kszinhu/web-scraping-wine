@@ -7,16 +7,19 @@ class WineModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False, unique=True)
     price = db.Column(db.Float(precision=2), nullable=False)
+    link = db.Column(db.String(80), nullable=False, unique=True)
 
-    def __init__(self, name, price):
+
+    def __init__(self, name, price, link):
         self.name = name
         self.price = price
+        self.link = link
 
     def __repr__(self, ):
-        return f'WineModel(name={self.name}, price={self.price})'
+        return f'WineModel(name={self.name}, price={self.price}, link={self.link})'
 
     def json(self, ):
-        return {'name': self.name, 'price': self.price}
+        return {'name': self.name, 'price': self.price, 'link': self.link}
 
     @classmethod
     def find_by_name(cls, name):
