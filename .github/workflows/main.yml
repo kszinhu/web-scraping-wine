@@ -1,1 +1,25 @@
-# preguiça
+# Deploy to Heroku
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Run server
+        run: python src/main.py
+      - uses: akhileshns/heroku-deploy@v3.12.12
+      - name: Deploy to Heroku
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "wine-scrapping-api"
+          heroku_email: "rodrigues.cassiano2007@gmail.com"
+          appdir: "src" # <- This will point to the api folder in your project
