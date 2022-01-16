@@ -21,6 +21,7 @@ jobs:
       - name: Build
         # Build usign main.py file in src folder
         run: |
+          ls -la
           python src/main.py
       - name: Deploy
         uses: akhileshns/heroku-deploy@v3.12.12
