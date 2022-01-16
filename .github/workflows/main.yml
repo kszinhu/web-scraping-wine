@@ -18,10 +18,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-      - name: Build
-        # Build usign app.py file in src folder
-        run: |
-          python src/app.py
       - name: Deploy
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
@@ -29,3 +25,6 @@ jobs:
           heroku_app_name: "wine-scrapping-api"
           heroku_email: "rodrigues.cassiano2007@gmail.com"
           appdir: "src"
+      - name: Run server in heroku
+        run: |
+          heroku run python src/app.py
