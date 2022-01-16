@@ -11,18 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.10.1
+      - name: Install dependencies python 3.10.1
         uses: actions/setup-python@v2
         with:
-          python-version: "3.10.1"
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-      - name: Run server
-        run: python src/main.py
-      - name: Push to Heroku
+          python-version: 3.10.1
+      - name: Install dependencies with pip
+        run: |
+          pip install -r requirements.txt
+      - name: Build
+        run: |
+          python src/main.py
+      - name: Deploy
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "wine-scrapping-api"
           heroku_email: "rodrigues.cassiano2007@gmail.com"
-          appdir: "src" # <- This will point to the api folder in your project
+          appdir: "src"
