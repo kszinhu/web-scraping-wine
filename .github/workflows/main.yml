@@ -8,17 +8,17 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies python 3.10.1
         uses: actions/setup-python@v2
         with:
-          python-version: 3.10.1
-      - name: Install dependencies with pip
+          python-version: '3.10.1'
+      - name: Install dependencies
         run: |
           pip install -r requirements.txt
-      - name: Run server
+      - name: Build
         run: |
           python src/main.py
       - name: Deploy
