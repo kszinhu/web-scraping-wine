@@ -1,10 +1,10 @@
 # Deploy to Heroku
-name: Deploy
+name: Deploy to Heroku (main)
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
