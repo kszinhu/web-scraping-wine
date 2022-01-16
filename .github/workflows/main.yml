@@ -19,9 +19,9 @@ jobs:
         run: |
           pip install -r requirements.txt
       - name: Build
-        # Build usign main.py file in src folder
+        # Build usign app.py file in src folder
         run: |
-          python ./src/main.py
+          python /src/app.py
       - name: Deploy
         uses: akhileshns/heroku-deploy@v3.12.12
         with:
