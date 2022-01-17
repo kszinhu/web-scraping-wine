@@ -21,10 +21,7 @@ class Server():
     return self.api.namespace(name='Wines', description='Wine Scraping Api', path='/')
 
   def run(self, ):
-      self.app.run(
-        port=5000,
-        debug=True,
-        host='0.0.0.0'
-      )
+    from waitress import serve
+    serve(self.app, host='0.0.0.0', port=5000)
 
 server = Server()
