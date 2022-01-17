@@ -24,4 +24,4 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "wine-scrapping-api"
           heroku_email: "rodrigues.cassiano2007@gmail.com"
-          appdir: "src"
+          appdir: "."
