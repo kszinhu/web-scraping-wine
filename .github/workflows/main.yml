@@ -25,3 +25,7 @@ jobs:
           heroku_app_name: "wine-scrapping-api"
           heroku_email: "rodrigues.cassiano2007@gmail.com"
           appdir: "."
+          justlogin: true
+        run: |
+          heroku container:login
+        # Run commands you would typically run from the heroku cli on your local machine to deploy your code
