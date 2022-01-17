@@ -17,8 +17,10 @@
 
 ### Recursos
 
-  - [**API**](/api/).
-  - [**Documentação**](/docs/).
+  Em construção...,
+
+  - [**API**](/API/)
+  - [**Documentação**](/DOCS/)
 
 ## 👤 - Contribuidores
 

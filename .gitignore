@@ -60,3 +60,9 @@ docs/_build/
 target/
 
 /venv
+
+# Variables for virtual environments
+.env
+
+# Generate Token for API
+src/helpers/generate_token.py
