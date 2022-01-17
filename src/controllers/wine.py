@@ -30,8 +30,10 @@ class Wine(Resource):
         wine = WineModel.find_by_id(id)
         if wine:
             data = request.get_json()
-            wine.name = data['name']
-            wine.price = data['price']
+            fields = ['name', 'price', 'link']
+            for field in fields:
+                if field in data:
+                    setattr(wine, field, data[field])
             wine.save_to_db()
             return wine_schema.dump(wine), HTTP_200_OK
         return jsonify({"errors": "Wine not found"}), HTTP_400_BAD_REQUEST
