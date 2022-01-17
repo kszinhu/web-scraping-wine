@@ -1,11 +1,11 @@
 from flask import request, jsonify
 from flask_restx import Resource, fields
-from constants.http_status_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
+from src.constants.http_status_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT, HTTP_400_BAD_REQUEST
 
-from models.wine import WineModel
-from schemas.wine import WineSchema
+from src.models.wine import WineModel
+from src.schemas.wine import WineSchema
 
-from server.instance import server
+from src.server.instance import server
 
 wine_ns = server.wine_ns
 

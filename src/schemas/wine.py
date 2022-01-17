@@ -1,5 +1,5 @@
-from ma import ma
-from models.wine import WineModel
+from src.ma import ma
+from src.models.wine import WineModel
 
 class WineSchema(ma.SQLAlchemyAutoSchema):
     class Meta:

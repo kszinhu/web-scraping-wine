@@ -1,13 +1,12 @@
 from flask import Flask, jsonify
 from flask_restx import Api
-
-from ma import ma
-from db import db
-from controllers.wine import Wine, WineList
+from src.ma import ma
+from src.db import db
+from src.controllers.wine import Wine, WineList
 
 from marshmallow import ValidationError
 
-from server.instance import server
+from src.server.instance import server
 
 api = server.api
 app = server.app
@@ -23,7 +22,7 @@ def handle_validation_error(e):
 api.add_resource(Wine, '/wine/<int:id>')
 api.add_resource(WineList, '/wines')
 
+db.init_app(app) # Initialize the database
 if __name__ == '__main__':
-    db.init_app(app)
     ma.init_app(app)
     server.run()
