@@ -1,6 +1,7 @@
 from flask import request, jsonify
-from functools import wraps, update_wrapper
+from functools import wraps
 from src.constants.http_status_code import HTTP_401_UNAUTHORIZED
+import jwt
 
 def decode_auth_token(token):
     try:

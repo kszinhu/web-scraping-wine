@@ -61,8 +61,11 @@ target/
 
 /venv
 
+# Visual Studio directories
+.vscode/
+
 # Variables for virtual environments
 .env
 
 # Generate Token for API
-src/helpers/generate_token.py
+src/generate_token.py
