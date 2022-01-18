@@ -19,3 +19,6 @@ werkzeug==0.16.1
 zipp==3.4.0
 gunicorn==20.0.4
 python-dotenv
+bs4
+lxml
+pytest

@@ -1,3 +1,4 @@
+import os
 from flask import Flask, jsonify, request
 from flask_restx import Api
 from src.ma import ma
@@ -5,9 +6,9 @@ from src.db import db
 from src.helpers import auth # Auxiliary methods
 from src.config import config # Configuration
 from src.controllers.wine import Wine, WineList # Controllers
-
 from marshmallow import ValidationError
 
+import pytest
 from src.server.instance import server
 
 api = server.api

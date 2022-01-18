@@ -5,6 +5,7 @@ db.sqlite3
 migrations/
 media/
 settings.py
+
 # C extensions
 *.so
 
@@ -55,6 +56,9 @@ coverage.xml
 
 # Sphinx documentation
 docs/_build/
+
+# Pytest fixtures
+.pytest_cache/
 
 # PyBuilder
 target/
