@@ -1,15 +1,11 @@
-import os
-from flask import Flask, jsonify, request
-from flask_restx import Api
+from flask import jsonify
 from src.ma import ma
 from src.db import db
-from src.helpers import auth # Auxiliary methods
-from src.config import config # Configuration
+from src.server import auth # Authorization module
+from src.config import config # Configuration module
+from src.server.instance import server # Server instance
 from src.controllers.wine import Wine, WineList # Controllers
 from marshmallow import ValidationError
-
-import pytest
-from src.server.instance import server
 
 api = server.api
 app = server.app

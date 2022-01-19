@@ -1,5 +1,4 @@
-# from api import check_auth
-
+# When token not provided, the request will fail with 401
 def test_auth_required_401(client):
     response = client.get('/wines')
     assert response.status_code == 401

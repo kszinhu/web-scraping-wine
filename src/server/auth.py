@@ -1,14 +1,7 @@
 from flask import request, jsonify
 from functools import wraps
 from src.constants.http_status_code import HTTP_401_UNAUTHORIZED
-import jwt
-
-def decode_auth_token(token):
-    try:
-        data = jwt.decode(token, app.config['SECRET_KEY'], algorithm="HS256")
-        return data['wine-token'] == app.config['API_TOKEN']
-    except:
-        return jsonify({'message': 'Token is invalid!'}), HTTP_401_UNAUTHORIZED
+from src.helpers.token import decode_auth_token
 
 def token_required(f):
     @wraps(f)
@@ -25,5 +18,3 @@ def token_required(f):
             return jsonify({'message': 'Token is invalid!'}), HTTP_401_UNAUTHORIZED
         return f(*args, **kwargs)
     return decorated
-
-
