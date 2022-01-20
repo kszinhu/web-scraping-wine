@@ -20,7 +20,7 @@ jobs:
           pip install -r requirements.txt
       - name: Running tests
         run: |
-          python3 -m pytest -W ignore::DeprecationWarning --no-header -s -v /tests
+          python3 -m pytest -W ignore::DeprecationWarning --no-header -s -v
       - name: Deploy
         uses: akhileshns/heroku-deploy@master
         with:
