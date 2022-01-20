@@ -22,3 +22,5 @@ python-dotenv
 bs4
 lxml
 pytest
+Flask-Testing
+sqlalchemy-utils

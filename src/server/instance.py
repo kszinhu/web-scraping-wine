@@ -1,9 +1,10 @@
-from logging import debug
 from flask import Flask, Blueprint
 from flask_restx import Api
+from src.config import config
 
 class Server():
   def __init__(self, ):
+    
     self.app = Flask(__name__)
     self.blueprint = Blueprint('api', __name__, url_prefix='/api')
     self.api = Api(self.blueprint, doc='/doc', title='Wine Scraping Api')
