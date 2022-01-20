@@ -15,12 +15,14 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.10.1'
-
-      - name: Download requirements and install
+      - name: Download dependencies
         run: |
-          sudo pip install --download $HOME/.pip-cache -r requirements.txt
-          sudo pip install $HOME/.pip-cache/*
+          pip download -r requirements.txt -d $HOME/.pip-cache
 
+      - name: Install dependencies saved in cache
+        run: |
+          pip install -r requirements.txt --no-index --find-links $HOME/.pip-cache
+          
       - name: Cache dependencies downloaded by pip
         uses: actions/cache@v2
         with:
@@ -36,6 +38,10 @@ jobs:
         with:
           path: $HOME/.pip-cache
           key: ${{ hashFiles('$HOME/.pip-cache') }}
+
+      - name: Install dependencies saved in cache
+        run: |
+          pip install -r requirements.txt --no-index --find-links $HOME/.pip-cache
 
       - name: Run tests (pytest)
         run: |
