@@ -1,8 +1,9 @@
 name: Deploy to Heroku (main)
 
-on: [push, pull_request]
+on:
+  [push, pull_request]
   branches:
-    - master
+    - main
 
 jobs:
   build:
