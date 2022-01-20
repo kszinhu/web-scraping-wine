@@ -16,13 +16,10 @@ jobs:
         with:
           python-version: '3.10.1'
 
-<<<<<<< HEAD
       - name: Install requirements
         run: |
           pip install -r requirements.txt
 
-=======
->>>>>>> 89966f7a4c92d0320cfb27263ecb6ae411ae92cd
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
