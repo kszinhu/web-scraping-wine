@@ -18,7 +18,7 @@ jobs:
 
       - name: Download requirements and install
         run: |
-          sudo pip install --download="$HOME/.pip-cache" -r requirements.txt
+          sudo pip install --download $HOME/.pip-cache -r requirements.txt
           sudo pip install $HOME/.pip-cache/*
 
       - name: Cache dependencies downloaded by pip
