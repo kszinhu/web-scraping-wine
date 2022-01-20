@@ -30,17 +30,11 @@ jobs:
     needs: build
     runs-on: ubuntu-20.04
     steps:
-      - name: Setup test environment
-        uses: actions/setup-python@v2
+      # restore the cache from the previous job and run the tests
+      - uses: actions/cache@v2
         with:
-          python-version: '3.10.1'
-          
-      - name: Restore dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
+          restore: true
           key: ${{ hashFiles('requirements.txt') }}
-          restore-keys: ${{ hashFiles('requirements.txt') }}
 
       - name: Run tests (pytest)
         run: |
