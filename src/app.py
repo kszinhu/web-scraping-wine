@@ -13,6 +13,10 @@ app = server.app
 # Add config to app
 app.config.from_object(config)
 
+# Routes
+api.add_resource(Wine, '/wine/<int:id>')
+api.add_resource(WineList, '/wines')
+
 # Verifies authorization to each request
 @app.before_request
 @auth.token_required
@@ -26,10 +30,6 @@ def create_tables():
 @app.errorhandler(ValidationError)
 def handle_validation_error(e):
     return jsonify(e.messages), 400
-
-# Routes
-api.add_resource(Wine, '/wine/<int:id>')
-api.add_resource(WineList, '/wines')
 
 # Initialize the database
 db.init_app(app)

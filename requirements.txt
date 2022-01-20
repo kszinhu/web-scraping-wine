@@ -24,3 +24,4 @@ lxml
 pytest
 Flask-Testing
 sqlalchemy-utils
+Faker
