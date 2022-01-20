@@ -18,7 +18,7 @@ jobs:
 
       - name: Download requirements and install
         run: |
-          pip install --download-cache="$HOME/.pip-cache" -r requirements.txt
+          pip install --download="$HOME/.pip-cache" -r requirements.txt
           pip install $HOME/.pip-cache/*
 
       - name: Cache dependencies downloaded by pip
@@ -35,7 +35,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: $HOME/.pip-cache
-          restore: ${{ hashFiles('$HOME/.pip-cache') }}
+          key: ${{ hashFiles('$HOME/.pip-cache') }}
 
       - name: Run tests (pytest)
         run: |
