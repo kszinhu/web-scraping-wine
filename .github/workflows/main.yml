@@ -16,25 +16,26 @@ jobs:
         with:
           python-version: '3.10.1'
 
-      - name: Install requirements
+      - name: Download requirements and install
         run: |
-          pip install -r requirements.txt
+          pip install --download-cache="$HOME/.pip-cache" -r requirements.txt
+          pip install $HOME/.pip-cache/*
 
-      - name: Cache dependencies
+      - name: Cache dependencies downloaded by pip
         uses: actions/cache@v2
         with:
-          path: ~/.cache/pip
-          key: ${{ hashFiles('requirements.txt') }}
+          path: $HOME/.pip-cache
+          with: ${{ hashFiles('$HOME/.pip-cache') }}
 
   test:
     needs: build
     runs-on: ubuntu-20.04
     steps:
-      # restore the cache from the previous job and run the tests
-      - uses: actions/cache@v2
+      - name: Restore dependencies downloaded by pip
+        uses: actions/cache@v2
         with:
-          restore: true
-          key: ${{ hashFiles('requirements.txt') }}
+          path: $HOME/.pip-cache
+          restore: ${{ hashFiles('$HOME/.pip-cache') }}
 
       - name: Run tests (pytest)
         run: |
