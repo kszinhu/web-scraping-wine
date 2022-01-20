@@ -1,10 +1,8 @@
-# Deploy to Heroku
 name: Deploy to Heroku (main)
 
-on:
-  push:
-    branches:
-      - main
+on: [push, pull_request]
+  branches:
+    - master
 
 jobs:
   build:
@@ -18,10 +16,20 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+
+  test:
+    needs: build
+    runs-on: ubuntu-20.04
+    steps:
       - name: Running tests
         run: |
-          python3 -m pytest -W ignore::DeprecationWarning --no-header -s -v /tests
-      - name: Deploy
+          python3 -m pytest -W ignore::DeprecationWarning --no-header -s -v
+  
+  deploy:
+    needs: [build, test]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@master
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
