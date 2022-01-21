@@ -27,9 +27,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: '~/.pip-cache'
-          key: ${{ hashFiles('~/.pip-cache') }}
-          restore-keys: | 
-            ${{ hashFiles('~/.pip-cache') }}
+          key: 'key_dependencies'
 
   test:
     needs: build
@@ -39,14 +37,11 @@ jobs:
         uses: actions/cache@v2
         with:
           path: '~/.pip-cache'
-          key: ${{ hashFiles('~/.pip-cache') }}
-          restore-keys: | 
-            ${{ hashFiles('~/.pip-cache') }}
-
+          key: 'key_dependencies'
 
       - name: Install dependencies saved in cache
         run: |
-          pip install -r requirements.txt --no-index --find-links $HOME/.pip-cache
+          pip install -r requirements.txt --no-index --find-links ~/.pip-cache
 
       - name: Run tests (pytest)
         run: |
