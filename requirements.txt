@@ -27,5 +27,5 @@ Flask-Testing
 sqlalchemy-utils
 Faker
 cryptography
-pyopenSSL==21.0.0
+pyopenSSL==36.0.1
 schedule
