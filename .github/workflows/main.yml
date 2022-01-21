@@ -39,10 +39,6 @@ jobs:
           path: '~/.pip-cache'
           key: 'key_dependencies'
 
-      - name: Install dependencies saved in cache
-        run: |
-          pip install -t ~/.pip-cache
-
       - name: Run tests (pytest)
         run: |
           python3 -m pytest -W ignore::DeprecationWarning --no-header -s -v
