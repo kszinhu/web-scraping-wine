@@ -3,6 +3,9 @@ name: Deploy to Heroku (main)
 on:
   push:
   pull_request:
+    paths-ignore:
+      - "README.md"
+      - "CONTRIBUTING.md"
     branches:
       - master
 
