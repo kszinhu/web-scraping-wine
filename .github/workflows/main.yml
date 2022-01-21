@@ -41,7 +41,7 @@ jobs:
 
       - name: Install dependencies saved in cache
         run: |
-          pip install -r requirements.txt --no-index --find-links ~/.pip-cache
+          pip install -t ~/.pip-cache
 
       - name: Run tests (pytest)
         run: |
