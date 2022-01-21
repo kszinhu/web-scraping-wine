@@ -27,10 +27,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.pip-cache
-          key: ${{ hashFiles('~/.pip-cache')-a }}
+          key: ${{ hashFiles('~/.pip-cache') }}
           restore-keys: | 
-            ${{ hashFiles('~/.pip-cache')-a }}
-            ${{ -a }}
+            ${{ hashFiles('~/.pip-cache') }}
 
   test:
     needs: build
@@ -40,10 +39,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.pip-cache
-          key: ${{ hashFiles('~/.pip-cache')-a }}
+          key: ${{ hashFiles('~/.pip-cache') }}
           restore-keys: | 
-            ${{ hashFiles('~/.pip-cache')-a }}
-            ${{ -a }}
+            ${{ hashFiles('~/.pip-cache') }}
 
 
       - name: Install dependencies saved in cache
