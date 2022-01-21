@@ -26,5 +26,6 @@ pytest
 Flask-Testing
 sqlalchemy-utils
 Faker
-pyopenSSL
+cryptography>=3.3
+pyopenSSL==21.0.0
 schedule
