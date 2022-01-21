@@ -17,17 +17,20 @@ jobs:
           python-version: '3.10.1'
       - name: Download dependencies
         run: |
-          pip download -r requirements.txt -d $HOME/.pip-cache
+          pip download -r requirements.txt -d ~/.pip-cache
 
       - name: Install dependencies saved in cache
         run: |
-          pip install -r requirements.txt --no-index --find-links $HOME/.pip-cache
+          pip install -r requirements.txt --no-index --find-links ~/.pip-cache
           
       - name: Cache dependencies downloaded by pip
         uses: actions/cache@v2
         with:
-          path: $HOME/.pip-cache
-          key: ${{ hashFiles('$HOME/.pip-cache') }}
+          path: ~/.pip-cache
+          key: ${{ hashFiles('~/.pip-cache')-a }}
+          restore-keys: | 
+            ${{ hashFiles('~/.pip-cache')-a }}
+            ${{ -a }}
 
   test:
     needs: build
@@ -36,8 +39,12 @@ jobs:
       - name: Restore dependencies downloaded by pip
         uses: actions/cache@v2
         with:
-          path: $HOME/.pip-cache
-          key: ${{ hashFiles('$HOME/.pip-cache') }}
+          path: ~/.pip-cache
+          key: ${{ hashFiles('~/.pip-cache')-a }}
+          restore-keys: | 
+            ${{ hashFiles('~/.pip-cache')-a }}
+            ${{ -a }}
+
 
       - name: Install dependencies saved in cache
         run: |
