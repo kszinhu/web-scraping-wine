@@ -27,3 +27,4 @@ Flask-Testing
 sqlalchemy-utils
 Faker
 pyopenSSL
+schedule

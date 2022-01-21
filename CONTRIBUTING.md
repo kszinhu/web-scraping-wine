@@ -14,6 +14,8 @@ $ pip install -r requirements.txt
 
 # Rodar o projeto local
 $ gunicorn --bind 0.0.0.0:5000 src.app:app
+# Ou usando:
+$ python3 src.app
 
 # Executar os testes
 $ python3 -m pytest -W ignore::DeprecationWarning
