@@ -51,6 +51,7 @@ jobs:
 
       - name: Install dependencies from cache
         run: |
+          sudo pip3 install --upgrade pip
           pip3 install -r requirements.txt --no-index --find-links ~/.pip-cache
 
       - name: Run tests (pytest)

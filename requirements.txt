@@ -27,4 +27,4 @@ Flask-Testing
 sqlalchemy-utils
 Faker
 cryptography
-apscheduler==3.8.1
+APScheduler==3.8.1
