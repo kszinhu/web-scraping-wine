@@ -1,6 +1,6 @@
 import re
 import time
-import schedule
+from apscheduler.schedulers.background import BackgroundScheduler
 from requests import get
 from bs4 import BeautifulSoup
 from ..db import db
@@ -83,10 +83,12 @@ def scrape_and_save():
         print('\n --- Data saved to database')
 
 # (Test) Run the function every 5 seconds
-schedule.every(20).seconds.do(scrape_and_save)
+scheduler = BackgroundScheduler()
 # (Production) Run the function every day at 00:00 (TZ = Brasilia)
 # schedule.every().day.at("00:00").do(get_data)
 
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+if __name__ == '__main__':
+    scheduler.add_job(scrape_and_save, 'interval', seconds=5)
+    scheduler.start()
+    while True:
+        time.sleep(1)
