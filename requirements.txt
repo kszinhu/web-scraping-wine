@@ -27,4 +27,3 @@ Flask-Testing
 sqlalchemy-utils
 Faker
 cryptography
-schedule
