@@ -124,8 +124,8 @@ if __name__ == '__main__':
     try:
         # (Test) Run the function every 5 seconds
         # (Production) Run the function every day (24 hours)
-        scheduler.add_job(scrape_and_save, 'interval', seconds=5)
-        # scheduler.add_job(scrape_and_save, 'interval', hours=24)
+        # scheduler.add_job(scrape_and_save, 'interval', seconds=5)
+        scheduler.add_job(scrape_and_save, 'interval', hours=24)
 
         scheduler.start()
         while True:
