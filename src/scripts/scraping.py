@@ -5,9 +5,11 @@ from requests import get
 from bs4 import BeautifulSoup
 from ..db import db
 from ..app import app
+from ..config import config
+from ..models.wine import WineModel
 
 def get_data():
-    response = get('https://www.amazon.com.br/s?k=vinho')
+    response = get('https://www.amazon.com.br/s?k=vinho&i=grocery')
     soup = BeautifulSoup(response.text, 'lxml')
 
     # Get all the products
@@ -15,30 +17,32 @@ def get_data():
         'div', attrs={'data-component-type': 's-search-result'})
 
     keys = { 
-    'name': { 
-        'element': 'span',
-        'attrs': {
-            'class_': 'a-size-base-plus a-color-base a-text-normal'
+        'name': { 
+            'element': 'span',
+            'attrs': {
+                # a-size-medium a-color-base a-text-normal
+                # a-size-base-plus a-color-base a-text-normal
+                'class_': 'a-size-base-plus a-color-base a-text-normal'
+            }
+        },
+        'price': {
+            'element': 'span',
+            'attrs': {
+                'class_': 'a-offscreen'
+            }
+        },
+        'image': {
+            'element': 'img',
+            'attrs': {
+                'class_': 's-image'
+            }
+        },
+        'link': {
+            'element': 'a',
+            'attrs': {
+                'class_': 'a-link-normal s-no-outline'
+            }
         }
-    },
-    'price': {
-        'element': 'span',
-        'attrs': {
-            'class_': 'a-offscreen'
-        }
-    },
-    'image': {
-        'element': 'img',
-        'attrs': {
-            'class_': 's-image'
-        }
-    },
-    'link': {
-        'element': 'a',
-        'attrs': {
-            'class_': 'a-link-normal s-no-outline'
-        }
-    }
     }
 
     # Each product is a dictionary with the following keys:
@@ -63,32 +67,41 @@ def get_data():
                         product_dict[key] = element.text
                 else:
                     product_dict[key] = None
-            product_dict
+            yield product_dict
+    else:
+        return None
 
 def scrape_and_save():
+    # print(get_data())
     with app.app_context():
         # Get data from Amazon
         products = get_data()
-        # Save data to database
+        #  Save data to database using client
         if products:
             for product in products:
-                product_db = db.Product(
+                wine = WineModel(
                     name=product['name'],
                     price=product['price'],
-                    image=product['image'],
-                    link=product['link']
+                    link=product['link'],
+                    image=product['image']
                 )
-                db.session.add(product_db)
-        db.session.commit()
+                wine.save_to_db()
+        else:
+            raise Exception('No products found')
+        
+        if db.session.query(WineModel).count() > 0:
+            print('Scraping and saving to database...')
+            print('Products saved:', db.session.query(WineModel).count())
+            
         print('\n --- Data saved to database')
 
-# (Test) Run the function every 5 seconds
 scheduler = BackgroundScheduler()
-# (Production) Run the function every day at 00:00 (TZ = Brasilia)
-# schedule.every().day.at("00:00").do(get_data)
 
 if __name__ == '__main__':
+    # (Test) Run the function every 5 seconds
+    # (Production) Run the function every day (24 hours)
     scheduler.add_job(scrape_and_save, 'interval', seconds=5)
+    # scheduler.add_job(scrape_and_save, 'interval', hours=24)
     scheduler.start()
     while True:
         time.sleep(1)

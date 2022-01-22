@@ -15,7 +15,8 @@ wine_list_schema = WineSchema(many=True)
 item = wine_ns.model('Wine', {
     'name': fields.String(description='Wine name'),
     'price': fields.Float(description='Wine price'),
-    'link': fields.String(description='Wine link')
+    'link': fields.String(description='Wine link'),
+    'image': fields.String(description='Wine image')
 })
 
 class Wine(Resource):
@@ -30,7 +31,7 @@ class Wine(Resource):
         wine = WineModel.find_by_id(id)
         if wine:
             data = request.get_json()
-            fields = ['name', 'price', 'link']
+            fields = ['name', 'price', 'link', 'image']
             for field in fields:
                 if field in data:
                     setattr(wine, field, data[field])

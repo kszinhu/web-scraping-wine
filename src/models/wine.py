@@ -8,12 +8,14 @@ class WineModel(db.Model):
     name = db.Column(db.String(80), nullable=False, unique=True)
     price = db.Column(db.Float(precision=2), nullable=False)
     link = db.Column(db.String(80), nullable=False, unique=True)
+    image = db.Column(db.String(80), nullable=False, unique=True)
 
 
-    def __init__(self, name, price, link):
+    def __init__(self, name, price, link, image):
         self.name = name
         self.price = price
         self.link = link
+        self.image = image
 
     def __repr__(self, ):
         return f'WineModel(name={self.name}, price={self.price}, link={self.link})'
