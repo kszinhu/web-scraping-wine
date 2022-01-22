@@ -50,7 +50,8 @@ def client():
             wine.WineModel(
                 name=fake.name(),
                 price=fake.random_int(min=10, max=100),
-                link=f"{fake.unique.url()}{i}"
+                link=f"{fake.unique.url()}{i}",
+                image=f"{fake.unique.image_url()}{i}"
             )
         )
 

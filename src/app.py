@@ -19,7 +19,7 @@ api.add_resource(WineList, '/wines')
 
 # Verifies authorization to each request
 @app.before_request
-# @auth.token_required
+@auth.token_required
 
 # Initialize database
 @app.before_first_request
