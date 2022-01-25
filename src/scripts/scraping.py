@@ -98,18 +98,14 @@ def scrape_and_save():
                         image=product['image']
                     )
                     wine.save_to_db()
+
                 except sqlalchemy.exc.IntegrityError as e:
                     if 'UNIQUE constraint failed' in str(e):
                         print(f"\t :( {product['name']} already exists")
 
-                        if index == len(enumerate(products)) - 1:
-                            print('\n')
-
                 except sqlalchemy.exc.InvalidRequestError as e:
                     print(f"\t :( {product['name']} already exists")
 
-                    if index == len(enumerate(products)) - 1:
-                        print('\n')
                 except Exception as e:
                     pass
 
@@ -119,7 +115,8 @@ def scrape_and_save():
         try:
             db.session.rollback()
             if db.session.query(WineModel).count() > 0:
-                print('\t Products saved:', db.session.query(WineModel).count())
+                print('\n\t Products saved:',
+                      db.session.query(WineModel).count())
         except sqlalchemy.exc.InvalidRequestError as e:
             pass
 
