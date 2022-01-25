@@ -1,7 +1,4 @@
-import re
-import sqlalchemy
-import tzlocal
-import time
+import re, sqlalchemy, tzlocal, time
 from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 from requests import get

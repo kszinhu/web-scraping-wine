@@ -1,6 +1,4 @@
-import re
-import sys
-import os
+import re, sys, os
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -29,7 +27,7 @@ def get_env(argv) -> str:
             # if running from command line, command line argument is '[src.scripts.scraping --environment=production]'
             # we need capture command line argument to set environment = 'production'
             arg_environment = re.search(
-                '--environment=(\w+)', COMMAND_LINE_STRING)
+                'environment=(\w+)', COMMAND_LINE_STRING)
             env = arg_environment.group(1)
             return env
 

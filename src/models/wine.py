@@ -7,8 +7,8 @@ class WineModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False, unique=True)
     price = db.Column(db.Float(precision=2), nullable=False)
-    link = db.Column(db.String(80), nullable=False, unique=True)
-    image = db.Column(db.String(80), nullable=False, unique=True)
+    link = db.Column(db.String(80), nullable=False)
+    image = db.Column(db.String(80), nullable=False)
 
 
     def __init__(self, name, price, link, image):

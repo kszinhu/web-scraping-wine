@@ -17,25 +17,35 @@ SQLALCHEMY_DATABASE_URI = f"sqlite:///src/server/{DB_NAME}.db"
 
 
 def db_prep():
-    print("\n Preparing database...")
+    # Preparing database
     if not database_exists(SQLALCHEMY_DATABASE_URI):
         create_database(SQLALCHEMY_DATABASE_URI)
-    print("\n Database prepared!")
+
 
 def apply_config(application):
     application.config['TESTING'] = True
     application.config['API_TOKEN'] = os.getenv('API_TOKEN')
     application.config['DEBUG'] = True
-    
+
+
 @pytest.fixture(scope="session")
 def faker_seed():
     return 774577
 
+
+@pytest.fixture
+def procfile_command():
+    # get the commands from the procfile and return them as a list
+    with open('Procfile') as f:
+        commands = f.read().splitlines()
+    return commands
+
+
 @pytest.fixture(scope="session", autouse=True)
-def client():
+def client_no_headers():
     # Prepare database (create if not exists and drop if exists)
     db_prep()
-    
+
     # Use Faker to generate fake data
     from faker import Faker
     fake = Faker()
@@ -57,7 +67,7 @@ def client():
 
     # Up to fake data for all models
     from src.db import db
-    
+
     # Setup application
     apply_config(application.app)
 
@@ -72,6 +82,53 @@ def client():
 
     # Clean up database
     with application.app.app_context():
-        print("\n Dropping database...")
+        db.session.remove()
+        db.drop_all()
+
+
+@pytest.fixture(scope="session", autouse=True)
+def client():
+    # Prepare database (create if not exists and drop if exists)
+    db_prep()
+
+    # Use Faker to generate fake data
+    from faker import Faker
+    fake = Faker()
+
+    # generate fake data for all models using sqlalchemy
+    from src.models import wine
+
+    # Create fake data for WineModel
+    wine_data = []
+    for i in range(10):
+        wine_data.append(
+            wine.WineModel(
+                name=fake.name(),
+                price=fake.random_int(min=10, max=100),
+                link=f"{fake.unique.url()}{i}",
+                image=f"{fake.unique.image_url()}{i}"
+            )
+        )
+
+    # Up to fake data for all models
+    from src.db import db
+
+    # Setup application
+    apply_config(application.app)
+
+    with application.app.app_context():
+        db.create_all()
+        db.session.add_all(wine_data)
+        db.session.commit()
+
+    # Create a test client
+    with application.app.test_client() as client:
+        token = client.application.config['API_TOKEN']
+        # Add header to all requests to simulate an API call
+        client.environ_base['HTTP_WINE_TOKEN'] = token
+        yield client
+
+    # Clean up database
+    with application.app.app_context():
         db.session.remove()
         db.drop_all()
