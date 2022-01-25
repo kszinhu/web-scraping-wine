@@ -73,3 +73,7 @@ target/
 
 # Generate Token for API
 src/generate_token.py
+
+# Database
+src/server/data.db
+src/server/data_test.db

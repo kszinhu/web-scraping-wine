@@ -1,7 +1,8 @@
 import re
-import time
 import sqlalchemy
 import tzlocal
+import time
+from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 from requests import get
 from bs4 import BeautifulSoup
@@ -77,7 +78,7 @@ def get_data():
 
 def scrape_and_save():
     with app.app_context():
-        print('\n --- Scraping and saving to database')
+        print('\n --- Scraping and saving to database\n')
 
         # If the wines table wasn't created yet, create it
         if not db.engine.dialect.has_table(db.engine, 'wines'):
@@ -88,7 +89,7 @@ def scrape_and_save():
 
         # If there are products, save them to the database
         if products:
-            for product in products:
+            for index, product in enumerate(products):
                 try:
                     wine = WineModel(
                         name=product['name'],
@@ -99,21 +100,28 @@ def scrape_and_save():
                     wine.save_to_db()
                 except sqlalchemy.exc.IntegrityError as e:
                     if 'UNIQUE constraint failed' in str(e):
-                        print('\n :( Wine already exists')
-                    else:
-                        raise e
+                        print(f"\t :( {product['name']} already exists")
+
+                        if index == len(enumerate(products)) - 1:
+                            print('\n')
+
                 except sqlalchemy.exc.InvalidRequestError as e:
-                    if 'This Session\'s transaction has been rolled back' in str(e):
-                        print('\n :( Wine already exists')
+                    print(f"\t :( {product['name']} already exists")
 
+                    if index == len(enumerate(products)) - 1:
+                        print('\n')
                 except Exception as e:
-                    continue
-                
-        else:
-            raise Exception('No products found')
+                    pass
 
-        if db.session.query(WineModel).count() > 0:
-            print('Products saved:', db.session.query(WineModel).count())
+        else:
+            raise Exception('\n :( No products found')
+
+        try:
+            db.session.rollback()
+            if db.session.query(WineModel).count() > 0:
+                print('\t Products saved:', db.session.query(WineModel).count())
+        except sqlalchemy.exc.InvalidRequestError as e:
+            pass
 
         print('\n --- Data saved to database')
 
@@ -122,23 +130,36 @@ scheduler = BackgroundScheduler(timezone=str(tzlocal.get_localzone()))
 
 if __name__ == '__main__':
     try:
-        # (Test) Run the function every 5 seconds
-        # (Production) Run the function every day (24 hours)
-        # scheduler.add_job(scrape_and_save, 'interval', seconds=5)
-        scheduler.add_job(scrape_and_save, 'interval', hours=24)
+        if config['ENVIRONMENT'] == 'development':
+            # (Development) Run the job immediately and then every 30 seconds
+            try:
+                scheduler.add_job(scrape_and_save, 'interval',
+                                  seconds=30, next_run_time=datetime.now())
+            except Exception:
+                pass
+
+        elif config['ENVIRONMENT'] == 'production':
+            # (Production) Run the job immediately and then every day
+            try:
+                scheduler.add_job(scrape_and_save, 'interval',
+                                  days=1, next_run_time=datetime.now())
+            except Exception:
+                pass
 
         scheduler.start()
+
         while True:
             time.sleep(1)
+
     except (KeyboardInterrupt, SystemExit):
         scheduler.shutdown()
         print('\n --- Stopped scraping')
         print('\n --- Exiting')
-        exit()
+
     except sqlalchemy.exc.InvalidRequestError as e:
         db.session.rollback()
         print('\n --- Exiting')
-        exit()
+
     finally:
         db.session.close()
         print('\n --- Exiting')
