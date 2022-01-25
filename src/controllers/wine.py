@@ -19,6 +19,7 @@ item = wine_ns.model('Wine', {
     'image': fields.String(description='Wine image')
 })
 
+
 class Wine(Resource):
 
     def get(self, id):
@@ -45,6 +46,7 @@ class Wine(Resource):
             wine.delete_from_db()
             return wine_schema.dump(wine), HTTP_204_NO_CONTENT
         return jsonify({"errors": "Wine not found"}), HTTP_400_BAD_REQUEST
+
 
 class WineList(Resource):
 

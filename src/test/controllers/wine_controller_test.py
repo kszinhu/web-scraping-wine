@@ -30,7 +30,8 @@ def test_update_wine(client):
     """
     print('\n --- Should return 200 when wine is updated')
 
-    response = client.put(url_for('api.wine', id=1), json={**wine_data, 'name': 'Test Wine Updated'})
+    response = client.put(url_for('api.wine', id=1), json={
+                          **wine_data, 'name': 'Test Wine Updated'})
     assert response.status_code == HTTP_200_OK
     assert WineModel.query.filter_by(id=1).first().name == 'Test Wine Updated'
 
