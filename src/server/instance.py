@@ -1,3 +1,4 @@
+import os
 from flask import Flask, Blueprint
 from flask_restx import Api
 from src.config import config
@@ -10,7 +11,7 @@ class Server():
     self.api = Api(self.blueprint, doc='/doc', title='Wine Scraping Api')
     self.app.register_blueprint(self.blueprint)
 
-    self.app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+    self.app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
     self.app.config['PROPAGATE_EXCEPTIONS'] = True
     self.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
