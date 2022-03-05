@@ -60,8 +60,10 @@ def client_no_headers():
             wine.WineModel(
                 name=fake.name(),
                 price=fake.random_int(min=10, max=100),
-                link=f"{fake.unique.url()}{i}",
-                image=f"{fake.unique.image_url()}{i}"
+                image=f"{fake.unique.image_url()}{i}",
+                country=fake.country(),
+                type='Vinho',
+                year=fake.year(),
             )
         )
 
@@ -105,8 +107,10 @@ def client():
             wine.WineModel(
                 name=fake.name(),
                 price=fake.random_int(min=10, max=100),
-                link=f"{fake.unique.url()}{i}",
-                image=f"{fake.unique.image_url()}{i}"
+                image=f"{fake.unique.image_url()}{i}",
+                year=fake.random_int(min=1900, max=2022),
+                country=fake.country(),
+                type='Vinho',
             )
         )
 

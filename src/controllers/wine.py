@@ -15,8 +15,10 @@ wine_list_schema = WineSchema(many=True)
 item = wine_ns.model('Wine', {
     'name': fields.String(description='Wine name'),
     'price': fields.Float(description='Wine price'),
-    'link': fields.String(description='Wine link'),
-    'image': fields.String(description='Wine image')
+    'image': fields.String(description='Wine image'),
+    'type': fields.String(description='Wine type'),
+    'year': fields.Integer(description='Wine year'),
+    'country': fields.String(description='Wine country')
 })
 
 
@@ -32,7 +34,7 @@ class Wine(Resource):
         wine = WineModel.find_by_id(id)
         if wine:
             data = request.get_json()
-            fields = ['name', 'price', 'link', 'image']
+            fields = ['name', 'price', 'image', 'type', 'year', 'country']
             for field in fields:
                 if field in data:
                     setattr(wine, field, data[field])
@@ -57,7 +59,7 @@ class WineList(Resource):
     @wine_ns.expect(item)
     @wine_ns.doc('Create a new wine')
     def post(self):
-        wine_json = request.get_json()
-        wine = wine_schema.load(wine_json)
+        wine_data = request.get_json()
+        wine = WineModel(**wine_data)
         wine.save_to_db()
         return wine_schema.dump(wine), HTTP_201_CREATED

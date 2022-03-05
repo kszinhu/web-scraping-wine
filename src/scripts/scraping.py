@@ -14,66 +14,26 @@ from ..models.wine import WineModel
 
 def get_data():
 
-    response = get(config['SCRAPING_URL'])
-    soup = BeautifulSoup(response.text, 'lxml')
+    for id in range(25700, 25750):
+        url = f'https://www.wine.com.br/api/v2/products/{id}?expand=attributes'
+        response = get(url)
 
-    # Get all the products
-    products = soup.find_all(
-        'div', attrs={'data-component-type': 's-search-result'})
+        soup = BeautifulSoup(response.text, 'lxml')
 
-    keys = {
-        'name': {
-            'element': 'span',
-            'attrs': {
-                'class_': 'a-size-medium a-color-base a-text-normal'
+        type = soup.find('type')
+        available = soup.find('available')
+        
+        if type is not None and available is not None and available.text == 'true' and type.text == 'Vinho':
+            product = {
+                'name': soup.find('name').text,
+                'price': soup.find('listprice').text,
+                'year': soup.find('year').text,
+                'country': soup.find('attributes').find('country').text,
+                'type': soup.find('attributes').find('type').text,
+                'image': f'https://www.wine.com.br/cdn-cgi/image/f=png,h=515,q=99/assets-images/produtos/{id}-01.png',
             }
-        },
-        'price': {
-            'element': 'span',
-            'attrs': {
-                'class_': 'a-offscreen'
-            }
-        },
-        'image': {
-            'element': 'img',
-            'attrs': {
-                'class_': 's-image'
-            }
-        },
-        'link': {
-            'element': 'a',
-            'attrs': {
-                'class_': 'a-link-normal s-no-outline'
-            }
-        }
-    }
-
-    # Each product is a dictionary with the following keys:
-    # - name (string)
-    # - price (in cents)
-    # - image (url to the image)
-    # - url (url to buy the product)
-    if len(products) > 0:
-        for product in products:
-            product_dict = {}
-            for key in keys:
-                element = product.find(**keys[key]['attrs'])
-                if element:
-                    if key == 'price':
-                        # Get the price(remove the 'R$' and ',') and convert to cents
-                        product_dict[key] = int(
-                            re.sub(r'[^\d]', '', element.text))
-                    elif key == 'image':
-                        product_dict[key] = element['src']
-                    elif key == 'link':
-                        product_dict[key] = element['href']
-                    else:
-                        product_dict[key] = element.text
-                else:
-                    product_dict[key] = None
-            yield product_dict
-    else:
-        return None
+            print(product)
+            yield product
 
 
 def scrape_and_save():
@@ -94,8 +54,10 @@ def scrape_and_save():
                     wine = WineModel(
                         name=product['name'],
                         price=product['price'],
-                        link=product['link'],
-                        image=product['image']
+                        year=product['year'],
+                        country=product['country'],
+                        type=product['type'],
+                        image=product['image'],
                     )
                     wine.save_to_db()
 

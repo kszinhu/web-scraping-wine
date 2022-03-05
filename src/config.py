@@ -28,7 +28,7 @@ def get_env(argv) -> str:
             # we need capture command line argument to set environment = 'production'
             arg_environment = re.search(
                 'environment=(\w+)', COMMAND_LINE_STRING)
-            env = arg_environment.group(1)
+            env = arg_environment != None and arg_environment.group(1)
             return env
 
 

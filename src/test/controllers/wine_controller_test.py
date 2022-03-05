@@ -5,8 +5,11 @@ from src.constants.http_status_code import HTTP_200_OK, HTTP_201_CREATED, HTTP_2
 wine_data = {
     'name': 'Test Wine',
     'price': 1000,
-    'link': 'http://test.com',
-    'image': 'http://test.com/image.jpg'}
+    'image': 'http://test.com/image.jpg',
+    'year': 2018,
+    'country': 'Test Country',
+    'type': 'Vinho'
+}
 
 
 def test_create_wine(client):
