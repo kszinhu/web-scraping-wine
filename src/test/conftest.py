@@ -13,8 +13,7 @@ load_dotenv()
 DB_NAME = f"{os.getenv('DB_NAME')}_test"
 DB_USER = os.getenv('DB_USER')
 DB_PASS = os.getenv('DB_PASSWORD')
-SQLALCHEMY_DATABASE_URI = f"sqlite:///src/server/{DB_NAME}.db"
-
+SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
 
 def db_prep():
     # Preparing database
